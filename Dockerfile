@@ -13,15 +13,28 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && docker-php-ext-install zip \
   && rm -rf /var/lib/apt/lists/*
 
+# Install imagick
 RUN pecl install imagick \
   && docker-php-ext-enable imagick
 
+# Install composer and Kirby CLI
 RUN curl --silent --show-error https://getcomposer.org/installer | php \
-  && mv composer.phar /usr/local/bin/composer
+  && mv composer.phar /usr/local/bin/composer \
+  && composer global require getkirby/cli:1.4.0
 
 ENV PATH "$PATH:~/.composer/vendor/bin"
 
-RUN composer global require getkirby/cli:1.4.0
+# Install go
+RUN curl -O https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz \
+  && tar -xvf go1.9.linux-amd64.tar.gz \
+  && mv go /usr/local
+
+ENV PATH "$PATH:/usr/local/go/bin"
+
+# Install mhsendmail
+RUN go get github.com/mailhog/mhsendmail \
+  && cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
+
 
 RUN a2enmod headers rewrite expires deflate
 
