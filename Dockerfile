@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
   && docker-php-ext-install gd \
   && docker-php-ext-install zip \
+  && docker-php-ext-install exif \
   && rm -rf /var/lib/apt/lists/*
 
 # Install imagick
