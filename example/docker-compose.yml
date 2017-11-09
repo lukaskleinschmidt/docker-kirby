@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  kirby:
+    image: lukaskleinschmidt/kirby
+    ports:
+      - "80:80"
+    volumes:
+      - ./public:/var/www/public
+      - ./compose/config:/etc/apache2/sites-enabled:rw
+      - ./compose/logs:/var/log/apache2:rw
+    tty: true
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
