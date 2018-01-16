@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   	libjpeg-dev \
   	libpng12-dev \
     libmagickwand-dev \
+    imagemagick \
     git \
     zip \
   && docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
@@ -20,8 +21,7 @@ RUN pecl install imagick \
 
 # Install composer and Kirby CLI
 RUN curl --silent --show-error https://getcomposer.org/installer | php \
-  && mv composer.phar /usr/local/bin/composer \
-  && composer global require getkirby/cli:1.4.0
+  && mv composer.phar /usr/local/bin/composer
 
 ENV PATH "$PATH:~/.composer/vendor/bin"
 
@@ -35,7 +35,6 @@ ENV PATH "$PATH:/usr/local/go/bin"
 # Install mhsendmail
 RUN go get github.com/mailhog/mhsendmail \
   && cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
-
 
 RUN a2enmod headers rewrite expires deflate
 
